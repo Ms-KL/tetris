@@ -167,8 +167,9 @@ class Piece(object):
         # default rotation = 0. When up arrow is pressed, adds 1, finds index in multi-dimensional list and rotates accordingly
         self.rotation = 0
 
+# TODO: Continue Tutorial from here: https://youtu.be/XGf2GcyHPhc?t=10240
 def create_grid(locked_positions={}):
-    
+
     pass
 
 def convert_shape_format(shape):
