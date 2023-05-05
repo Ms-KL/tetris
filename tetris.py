@@ -150,9 +150,25 @@ shape_colors = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 16
 
 
 class Piece(object):
-    pass
+    ''' 
+    Main data structure for game
+    Includes width, height and shape parameters
+    '''
+    def __init__(self, x, y, shape):
+        self.x = x
+        self.y = y
+
+        # use index for color below
+        self.shape = shape
+
+        # look at index of self.shape in shape list, use corresponding index to find matching color in list (could have done dict instead)
+        self.color = shape_colors[shapes.index(shape)]
+
+        # default rotation = 0. When up arrow is pressed, adds 1, finds index in multi-dimensional list and rotates accordingly
+        self.rotation = 0
 
 def create_grid(locked_positions={}):
+    
     pass
 
 def convert_shape_format(shape):
