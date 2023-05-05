@@ -8,4 +8,4 @@ Free Code Camp tutorial project on Tetris:
 
 Result Example from Tutorial:
 
-![img](assets\example-screenshot.png)
+<img src="assets/example-screenshot.png" height="200">
