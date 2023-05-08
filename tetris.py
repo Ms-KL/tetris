@@ -216,8 +216,11 @@ def check_lost(positions):
 def get_shape():
     '''
     picks a random shape from the shapes list
+    Uses the Piece() function to create piece
+    5 = x position = column
+    0 = y position = row --> top of screen --> can start in neg position to be above screen
     '''
-    return random.choice(shapes)
+    return Piece(5, 0, random.choice(shapes))
 
 def draw_text_middle(text, size, color, surface):
     pass
@@ -285,11 +288,81 @@ def draw_window(surface, grid):
     pygame.display.update()
     # update screen with above
 
-def main():
-    pass
+def main(win):
+    locked_positions = {}
+        # passing into create_grid
+    grid = create_grid(locked_positions)
+    change_piece = False
+    run = True
+        #for while loop
+    current_piece = get_shape()
+        # gets random shape element from shapes list
+    next_piece = get_shape()
+        # gets random shape element from shapes list
+    clock = pygame.time.Clock()
+        # uses Clock function in pygame
+    fall_time = 0
 
-def main_menu():
-    pass
+    while run:
+        # while run is True
 
-main_menu()  # start game
-');
+        for event in pygame.event.get()
+            # get the pygame event. For each event check the the event type
+            if event.type == pygame.QUIT:
+                # if the event type is quit
+                run = False
+                    # break the loop and Quit the game
+            
+            if event.type == pygame.KEYDOWN:
+                # if event type is keydown (if a key is pressed)
+
+                if event.key == pygame.K_LEFT:
+                    # if left is hit, move one position left
+                    current_piece.x -= 1
+                    # current_piece = get_shape()
+                    # get_shape() = create piece, color it, size it, set rotation, position it at top
+
+                    if not(valid_space(current_piece, grid)):
+                        # if the space where the current piece is going to be moved to is not valid
+                        current_piece += 1
+                        # change the position back to where it was
+
+                if event.key == pygame.K_RIGHT:
+                    # if right is hit, move one position right
+                    current_piece.x += 1
+
+                    if not(valid_space(current_piece, grid)):
+                        # if the space where the current piece is going to be moved to is not valid
+                        current_piece -= 1
+                        # change the position back to where it was
+
+                if event.key == pygame.K_DOWN:
+                    # if down is hit, move one position down
+                    current_piece.y += 1
+                    
+                    if not(valid_space(current_piece, grid)):
+                        # if the space where the current piece is going to be moved to is not valid
+                        current_piece.y -= 1
+                        # change the position back to where it was
+
+                if event.key == pygame.K_UP:
+                    # if up is hit, rotate shape
+                    current_piece.rotation += 1
+
+                    if not(valid_space(current_piece, grid)):
+                        # if the rotation will put piece off screen
+                        current_piece -= 1
+        
+        draw_window(win, grid)
+        # uses win created (as global out of this function), to pop up display game window
+
+def main_menu(win):
+    main(win)
+
+win = pygame.display.set_mode((s_width, s_height))
+    # creates pop up game-play screen
+
+pygame.display.set_caption('Tetris')
+    # creates a name for the display created
+
+main_menu(win)  # start game
