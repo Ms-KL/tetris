@@ -154,6 +154,8 @@ class Piece(object):
     Main data structure for game
     Includes width, height and shape parameters
     '''
+
+    # METHOD:
     def __init__(self, x, y, shape):
         self.x = x
         self.y = y
@@ -170,7 +172,38 @@ class Piece(object):
 # TODO: Continue Tutorial from here: https://youtu.be/XGf2GcyHPhc?t=10240
 def create_grid(locked_positions={}):
 
-    pass
+    ''' 
+    creates a grid of black squares 20 height (rows) x 10 width (columns):
+
+        for x in range(20) = ROWS --> each item in list is a row with elements from sublist = Y AXIS
+        for x in range(10) = COLUMNS --> each item in list is a column with 10 elements = X AXIS
+        0,0,0 = BLACK SQUARES --> each item in Columns list is a black square
+    '''
+    grid = [[(0,0,0) for x in range(10)] for x in range(20)]
+
+    '''
+    looks each grid block and sees if is a locked_position value
+    if it is, change the default grid block black to color, as per the locked_postions dictionary
+    '''
+
+    for grid_block_y_axis in range(len(grid)):
+        # for i in range
+        # this will = 20 because grid is a list of 20 elements
+        for grid_block_x_axis in range(len(grid[grid_block_y_axis])):
+            # for j in range
+            # this will = 10 because sublist of grid is a list of 10 elements
+            if (grid_block_x_axis, grid_block_y_axis) in locked_positions:
+                # if (j, i) in locked_positions
+                # if the block position is in the locked_positions dictionary, then....
+                locked_position_block = locked_positions[(grid_block_x_axis, grid_block_y_axis)]
+                # c = locked_positions[(j, i)]
+                # assign the locked_position_block value to the current x and y location as the first value in the locked_positions dictionary
+                grid[grid_block_y_axis][grid_block_x_axis] = locked_position_block
+                    # grid[i][j] = c
+                    # set the grid index values to the locked position value just assigned
+    
+    return grid
+
 
 def convert_shape_format(shape):
     pass
@@ -192,10 +225,10 @@ def draw_grid(surface, row, col):
     pass
 
 def clear_rows(grid, locked):
-
+    pass
 
 def draw_next_shape(shape, surface):
-
+    pass
 
 def draw_window(surface):
     pass
