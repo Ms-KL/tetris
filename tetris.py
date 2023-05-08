@@ -1,14 +1,14 @@
 import pygame
 import random
 
-# creating the data structure for pieces
-# setting up global vars
-# functions
-# - create_grid
-# - draw_grid
-# - draw_window
-# - rotating shape in main
-# - setting up the main
+    # creating the data structure for pieces
+    # setting up global vars
+    # functions
+    # - create_grid
+    # - draw_grid
+    # - draw_window
+    # - rotating shape in main
+    # - setting up the main
 
 """
 10 x 20 square grid
@@ -36,9 +36,9 @@ top_left_y = s_height - play_height
 
 # SHAPE FORMATS
 
-# each element within list = rotation
-# 5x5 block of .
-    # 0 represents where block exists
+    # each element within list = rotation
+    # 5x5 block of .
+        # 0 represents where block exists
 
 S = [['.....',
     '......',
@@ -169,14 +169,13 @@ class Piece(object):
         # default rotation = 0. When up arrow is pressed, adds 1, finds index in multi-dimensional list and rotates accordingly
         self.rotation = 0
 
-# TODO: Continue Tutorial from here: https://youtu.be/XGf2GcyHPhc?t=10240
 def create_grid(locked_positions={}):
 
     ''' 
     creates a grid of black squares 20 height (rows) x 10 width (columns):
 
-        for x in range(20) = ROWS --> each item in list is a row with elements from sublist = Y AXIS
-        for x in range(10) = COLUMNS --> each item in list is a column with 10 elements = X AXIS
+        for i in range(20) = ROWS / Y / i --> each item in list is a row with elements from sublist
+        for j in range(10) = COLUMNS / X / j --> each item in list is a column with 10 elements
         0,0,0 = BLACK SQUARES --> each item in Columns list is a black square
     '''
     grid = [[(0,0,0) for x in range(10)] for x in range(20)]
@@ -220,12 +219,35 @@ def get_shape():
     '''
     return random.choice(shapes)
 
-
 def draw_text_middle(text, size, color, surface):
     pass
 
-def draw_grid(surface, row, col):
-    pass
+def draw_grid(surface, grid):
+
+    '''
+    this function is used in draw_window below
+    draw grid objects onto screen using
+        find column (j) location and * by block size = X position to draw
+        find row (i) location and * by block size = Y position to draw
+    '''
+
+    for grid_block_y_axis in range(len(grid)):
+    # for i in range(len(grid)):
+    # for each row
+        for grid_block_x_axis in range(len(grid[grid_block_y_axis])):
+        # for j in range(len(grid[i])):
+        # for each column in the row
+            pygame.draw.rect(surface, grid[grid_block_y_axis][grid_block_x_axis], (top_left_x + grid_block_x_axis*block_size, top_left_y+ grid_block_y_axis*block_size, block_size, block_size), 0)
+            # pygame.draw.rect(surface, grid[i][j], (top_left_x + j*block_size, top_left_y+ i*block_size, block_size, block_size), 0)
+
+                # color of block = grid[grid_block_y_axis][grid_block_x_axis]
+                # position of block = (top_left_x + j*block_size, top_left_y+ i*block_size)
+                # width, height = block_size, block_size
+                # fill shape (not just border) = 0 --> leave off if just border
+    
+    pygame.draw.rect(surface, (255,0,0), (top_left_x, top_left_y, play_width, play_height), 4)
+    # draw red rectangle that represents play area with border size of 4
+
 
 def clear_rows(grid, locked):
     pass
@@ -233,8 +255,35 @@ def clear_rows(grid, locked):
 def draw_next_shape(shape, surface):
     pass
 
-def draw_window(surface):
-    pass
+def draw_window(surface, grid):
+    surface.fill((0,0,0))
+    # surface: drawing the grid on surface (canvas)
+    # change the surface to black
+
+    pygame.font.init()
+    font = pygame.font.SysFont('arial', 60)
+    label = font.render('Tetris', 1, (255,255,255))
+        # set the title label, font, colour and size for the game using pygame
+        # https://www.pygame.org/docs/ref/font.html
+        # font = sets the font and font size to draw to screen
+        # label = sets the text for the label and colour --> not sure why 1 is there?
+
+    surface.blit(label, (top_left_x + play_width/2 - (label.get_width()/2), 30))
+        # draw the title using pygame function
+        # surface = where to draw
+        # blit = ?
+        # label = what to draw
+            # (top_left_x + play_width/2) = center of the screen = top left position and half of the width
+            # label.get_width() = width of label
+            # (top_left_x + play_width/2 - (label.get_width()/2)) 
+                # --> draw the label in the center of the screen calc LESS the label width
+            # 30 = Y axis location = 30th Row
+    
+    draw_grid(surface, grid)
+    # call function to draw
+
+    pygame.display.update()
+    # update screen with above
 
 def main():
     pass
