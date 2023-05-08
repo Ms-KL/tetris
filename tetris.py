@@ -225,6 +225,8 @@ def get_shape():
 def draw_text_middle(text, size, color, surface):
     pass
 
+# -------------------- TODO: start part 2 of tutorial here: https://youtu.be/XGf2GcyHPhc?t=11429
+
 def draw_grid(surface, grid):
 
     '''
