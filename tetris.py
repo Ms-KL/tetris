@@ -205,10 +205,6 @@ def create_grid(locked_positions={}):
     return grid
 
 
-
-
-    pass
-
 def convert_shape_format(shape):
     pass
 
@@ -229,10 +225,10 @@ def draw_grid(surface, row, col):
     pass
 
 def clear_rows(grid, locked):
-
+    pass
 
 def draw_next_shape(shape, surface):
-
+    pass
 
 def draw_window(surface):
     pass
