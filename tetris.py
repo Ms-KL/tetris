@@ -230,8 +230,25 @@ def draw_text_middle(text, size, color, surface):
 def draw_grid(surface, grid):
     
     '''
-    insert    
+    draw grey lines over the top of each block
     '''
+
+    sx = top_left_x
+    sy = top_left_y
+    # start x, start y
+
+    for i in range(len(grid)):
+    # i = y = row
+
+        pygame.draw.line(surface, (128,128,128), (sx, sy+i*block_size), (sx+play_width, sy+i*block_size))
+        # draw 20 vertical lines: X location stays the same (same column every time), y location changes (moved down each row within the column)
+        # where, colour, location
+        
+        for j in range(len(grid[i])):
+        # j = x = column
+
+            pygame.draw.line(surface, (128,128,128), (sx, sy+j*block_size, sy), (sx+j*block_size, sy + play_height))
+            # draw 10 horizontal lines
 
     pass
 
