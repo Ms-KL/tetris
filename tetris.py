@@ -148,6 +148,7 @@ shapes = [S, Z, I, O, J, L, T]
 shape_colors = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 165, 0), (0, 0, 255), (128, 0, 128)]
 # index 0 - 6 represent shape
 
+# _______________________________________________________
 
 class Piece(object):
     ''' 
@@ -168,6 +169,8 @@ class Piece(object):
 
         # default rotation = 0. When up arrow is pressed, adds 1, finds index in multi-dimensional list and rotates accordingly
         self.rotation = 0
+
+# _______________________________________________________
 
 def create_grid(locked_positions={}):
 
@@ -203,15 +206,84 @@ def create_grid(locked_positions={}):
     
     return grid
 
+# _______________________________________________________
 
 def convert_shape_format(shape):
-    pass
+    '''
+    converts the list of shapes and rotation into a form that the computer can read.
+    * generate list of positions
+    * based on position... check, draw etc.
+    * if a 0 exists, provide position, else provide nothing
 
+    1) get the shape from shape list and index... return the list within list. eg: get T, index to find the first position (0) and return the element
+        eg:
+        T = [['.....',
+            '..0..',
+            '.000.',
+            '.....',
+            '.....'],
+            ['.....',
+            '..0..',
+            '..00.',
+            '..0..',
+            '.....'],
+            ['.....',
+            '.....',
+            '.000.',
+            '..0..',
+            '.....'],
+            ['.....',
+            '..0..',
+            '.00..',
+            '..0..',
+            '.....']]
+    '''
+
+    positions = []
+    # goal = to create a list of positions
+
+    format_shape = shape.shape[shape.rotation % len(shape.shape)]
+    # goal = to get the element within sublist --> list = T, sublist = ['.....','..0..','.000.','.....','.....'], element = '..0..'
+
+    # using modulus provides the remainder --> use the modulus to index against list and return the shape in corresponding index
+        # eg: look at current shape.shape (shape list and current index of that shape)... 
+            # eg: shape.shape[shape.rotation] = 0... returns the shape/rotation at index 0 of shape list --> this will increase/decrease based on arrow logic
+                # if current shape.shape[shape.rotation] > the length of the shape.shape list... then the remainder ( % ) is used to index.
+                    # eg: shape.shape[shape.rotation] = 4 and the len of the list is 3... then the remainder 1 is used to index in the 0 position of the list
+            # modulus provides the remainder, which is how the list is indexed again.
+    
+    for i, line in enumerate(format_shape):
+        row = list(line) # row is the a list of the line --> returns the current line --> eg: '..0..'
+        for j, column in enumerate(row):
+            # eg: '..0..' = row / line
+                # FIRST LOOP --> j = 0, column = .
+                # SECOND LOOP --> j = 1, column = .
+                # THIRD LOOP --> j = 2, column = '0'
+            if column == '0':
+            # looks at the column within the current row and asks if the column is 0
+                positions.append((shape.x + j, shape.y + i))
+                # if it is a 0, add the index of that location to the positions list
+                # shape.x/y = current x/y value of shape --> add the j(column) value to shape.x position (same with i(row) + shape.y position)
+
+    for i, pos in enumerate(positions):
+        positions[i] = (pos[0] - 2, pos[1] - 4)
+        # positionslist[index] = currentposition in loop - 2
+        # used to offset the position location and take 2 from every x value and 4 from every Y value
+        # moves to left and up
+        # TODO: I don't fully follow this... need to revisit: https://youtu.be/XGf2GcyHPhc?t=12010
+
+# _______________________________________________________
+
+# ---------------- TODO: Continue from here ---> valid_space https://youtu.be/XGf2GcyHPhc?t=12098
 def valid_space(shape, grid):
     pass
 
+# _______________________________________________________
+
 def check_lost(positions):
     pass
+
+# _______________________________________________________
 
 def get_shape():
     '''
@@ -222,10 +294,12 @@ def get_shape():
     '''
     return Piece(5, 0, random.choice(shapes))
 
+# _______________________________________________________
+
 def draw_text_middle(text, size, color, surface):
     pass
 
-# -------------------- TODO: start part 2 of tutorial here: https://youtu.be/XGf2GcyHPhc?t=11429
+# _______________________________________________________
 
 def draw_grid(surface, grid):
     
@@ -250,13 +324,17 @@ def draw_grid(surface, grid):
             pygame.draw.line(surface, (128,128,128), (sx, sy+j*block_size, sy), (sx+j*block_size, sy + play_height))
             # draw 10 horizontal lines
 
-    pass
+# _______________________________________________________
 
 def clear_rows(grid, locked):
     pass
 
+# _______________________________________________________
+
 def draw_next_shape(shape, surface):
     pass
+
+# _______________________________________________________
 
 def draw_window(surface, grid):
     surface.fill((0,0,0))
@@ -311,6 +389,8 @@ def draw_window(surface, grid):
 
     pygame.display.update()
     # update screen with above
+
+# _______________________________________________________
 
 def main(win):
     locked_positions = {}
@@ -380,8 +460,12 @@ def main(win):
         draw_window(win, grid)
         # uses win created (as global out of this function), to pop up display game window
 
+# _______________________________________________________
+
 def main_menu(win):
     main(win)
+
+# _______________________________________________________
 
 win = pygame.display.set_mode((s_width, s_height))
     # creates pop up game-play screen
