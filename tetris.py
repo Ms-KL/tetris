@@ -225,32 +225,32 @@ def get_shape():
 def draw_text_middle(text, size, color, surface):
     pass
 
+# -------------------- TODO: start part 2 of tutorial here: https://youtu.be/XGf2GcyHPhc?t=11429
+
 def draw_grid(surface, grid):
-
-    '''
-    this function is used in draw_window below
-    draw grid objects onto screen using
-        find column (j) location and * by block size = X position to draw
-        find row (i) location and * by block size = Y position to draw
-    '''
-
-    for grid_block_y_axis in range(len(grid)):
-    # for i in range(len(grid)):
-    # for each row
-        for grid_block_x_axis in range(len(grid[grid_block_y_axis])):
-        # for j in range(len(grid[i])):
-        # for each column in the row
-            pygame.draw.rect(surface, grid[grid_block_y_axis][grid_block_x_axis], (top_left_x + grid_block_x_axis*block_size, top_left_y+ grid_block_y_axis*block_size, block_size, block_size), 0)
-            # pygame.draw.rect(surface, grid[i][j], (top_left_x + j*block_size, top_left_y+ i*block_size, block_size, block_size), 0)
-
-                # color of block = grid[grid_block_y_axis][grid_block_x_axis]
-                # position of block = (top_left_x + j*block_size, top_left_y+ i*block_size)
-                # width, height = block_size, block_size
-                # fill shape (not just border) = 0 --> leave off if just border
     
-    pygame.draw.rect(surface, (255,0,0), (top_left_x, top_left_y, play_width, play_height), 4)
-    # draw red rectangle that represents play area with border size of 4
+    '''
+    draw grey lines over the top of each block
+    '''
 
+    sx = top_left_x
+    sy = top_left_y
+    # start x, start y
+
+    for i in range(len(grid)):
+    # i = y = row
+
+        pygame.draw.line(surface, (128,128,128), (sx, sy+i*block_size), (sx+play_width, sy+i*block_size))
+        # draw 20 vertical lines: X location stays the same (same column every time), y location changes (moved down each row within the column)
+        # where, colour, location
+        
+        for j in range(len(grid[i])):
+        # j = x = column
+
+            pygame.draw.line(surface, (128,128,128), (sx, sy+j*block_size, sy), (sx+j*block_size, sy + play_height))
+            # draw 10 horizontal lines
+
+    pass
 
 def clear_rows(grid, locked):
     pass
@@ -282,6 +282,30 @@ def draw_window(surface, grid):
                 # --> draw the label in the center of the screen calc LESS the label width
             # 30 = Y axis location = 30th Row
     
+    '''
+    this function is used in draw_window below
+    draw grid objects onto screen using
+        find column (j) location and * by block size = X position to draw
+        find row (i) location and * by block size = Y position to draw
+    '''
+
+    for grid_block_y_axis in range(len(grid)):
+    # for i in range(len(grid)):
+    # for each row
+        for grid_block_x_axis in range(len(grid[grid_block_y_axis])):
+        # for j in range(len(grid[i])):
+        # for each column in the row
+            pygame.draw.rect(surface, grid[grid_block_y_axis][grid_block_x_axis], (top_left_x + grid_block_x_axis*block_size, top_left_y+ grid_block_y_axis*block_size, block_size, block_size), 0)
+            # pygame.draw.rect(surface, grid[i][j], (top_left_x + j*block_size, top_left_y+ i*block_size, block_size, block_size), 0)
+
+                # color of block = grid[grid_block_y_axis][grid_block_x_axis]
+                # position of block = (top_left_x + j*block_size, top_left_y+ i*block_size)
+                # width, height = block_size, block_size
+                # fill shape (not just border) = 0 --> leave off if just border
+    
+    pygame.draw.rect(surface, (255,0,0), (top_left_x, top_left_y, play_width, play_height), 4)
+    # draw red rectangle that represents play area with border size of 4
+
     draw_grid(surface, grid)
     # call function to draw
 
