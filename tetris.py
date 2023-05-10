@@ -272,6 +272,9 @@ def convert_shape_format(shape):
         # moves to left and up
         # TODO: I don't fully follow this... need to revisit: https://youtu.be/XGf2GcyHPhc?t=12010
 
+    
+    return positions
+
 # _______________________________________________________
 
 def valid_space(shape, grid):
