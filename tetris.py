@@ -375,7 +375,7 @@ def draw_window(surface, grid):
 
     pygame.font.init()
     font = pygame.font.SysFont('arial', 60)
-    label = font.render('Tetris', 1, (255,255,255))
+    label = font.render('Kristy\'s Tetris', 1, (255,255,255))
         # set the title label, font, colour and size for the game using pygame
         # https://www.pygame.org/docs/ref/font.html
         # font = sets the font and font size to draw to screen
