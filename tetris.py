@@ -1,3 +1,5 @@
+# ----------> Continue from HERE: https://youtu.be/XGf2GcyHPhc?t=13157
+
 import pygame
 import random
 
@@ -272,6 +274,9 @@ def convert_shape_format(shape):
         # moves to left and up
         # TODO: I don't fully follow this... need to revisit: https://youtu.be/XGf2GcyHPhc?t=12010
 
+    
+    return positions
+
 # _______________________________________________________
 
 def valid_space(shape, grid):
@@ -340,15 +345,16 @@ def draw_grid(surface, grid):
     for i in range(len(grid)):
     # i = y = row
 
-        pygame.draw.line(surface, (128,128,128), (sx, sy+i*block_size), (sx+play_width, sy+i*block_size))
+        pygame.draw.line(surface, (128,128,128), (sx, sy + i*block_size), (sx+play_width, sy+ i*block_size))
+        # draw horizontal lines
         # draw 20 vertical lines: X location stays the same (same column every time), y location changes (moved down each row within the column)
         # where, colour, location
         
         for j in range(len(grid[i])):
         # j = x = column
 
-            pygame.draw.line(surface, (128,128,128), (sx, sy+j*block_size, sy), (sx+j*block_size, sy + play_height))
-            # draw 10 horizontal lines
+            pygame.draw.line(surface, (128,128,128), (sx + j * block_size, sy), (sx + j * block_size, sy + play_height))
+            # draw vertical lines
 
 # _______________________________________________________
 
@@ -369,7 +375,7 @@ def draw_window(surface, grid):
 
     pygame.font.init()
     font = pygame.font.SysFont('arial', 60)
-    label = font.render('Tetris', 1, (255,255,255))
+    label = font.render('Kristy\'s Tetris', 1, (255,255,255))
         # set the title label, font, colour and size for the game using pygame
         # https://www.pygame.org/docs/ref/font.html
         # font = sets the font and font size to draw to screen
@@ -476,7 +482,7 @@ def main(win):
 
                     if not(valid_space(current_piece, grid)):
                         # if the space where the current piece is going to be moved to is not valid
-                        current_piece += 1
+                        current_piece.x += 1
                         # change the position back to where it was
 
                 if event.key == pygame.K_RIGHT:
@@ -485,7 +491,7 @@ def main(win):
 
                     if not(valid_space(current_piece, grid)):
                         # if the space where the current piece is going to be moved to is not valid
-                        current_piece -= 1
+                        current_piece.x -= 1
                         # change the position back to where it was
 
                 if event.key == pygame.K_DOWN:
@@ -503,7 +509,7 @@ def main(win):
 
                     if not(valid_space(current_piece, grid)):
                         # if the rotation will put piece off screen
-                        current_piece -= 1
+                        current_piece.rotation -= 1
         
         shape_pos = convert_shape_format(current_piece)
         # check the positions of all the pieces that have fallen to see if they need to be converted or if they need to be locked
