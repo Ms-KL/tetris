@@ -345,15 +345,16 @@ def draw_grid(surface, grid):
     for i in range(len(grid)):
     # i = y = row
 
-        pygame.draw.line(surface, (128,128,128), (sx, sy+i*block_size), (sx+play_width, sy+i*block_size))
+        pygame.draw.line(surface, (128,128,128), (sx, sy + i*block_size), (sx+play_width, sy+ i*block_size))
+        # draw horizontal lines
         # draw 20 vertical lines: X location stays the same (same column every time), y location changes (moved down each row within the column)
         # where, colour, location
         
         for j in range(len(grid[i])):
         # j = x = column
 
-            pygame.draw.line(surface, (128,128,128), (sx, sy+j * block_size, sy), (sx+j * block_size, sy + play_height))
-            # draw 10 horizontal lines
+            pygame.draw.line(surface, (128,128,128), (sx + j * block_size, sy), (sx + j * block_size, sy + play_height))
+            # draw vertical lines
 
 # _______________________________________________________
 
