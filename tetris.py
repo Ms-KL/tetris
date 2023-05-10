@@ -276,7 +276,24 @@ def convert_shape_format(shape):
 
 # ---------------- TODO: Continue from here ---> valid_space https://youtu.be/XGf2GcyHPhc?t=12098
 def valid_space(shape, grid):
-    pass
+    '''
+    check grid to see if we are moving into a valid space
+    '''
+    accepted_pos = [[(j, i) for j in range(10) if grid[i][j] == (0,0,0)] for i in range(20)] # only allows if the position is empty. 0 color = empty
+    accepted_pos = [j for sub in accepted_pos for j in sub] # will look like this: [(),()]
+
+    # takes all positions in the existing list and overriding into a one dimensional list
+    # eg: flattens list: turns the accepted_pos list from this: [[(0,1)], [(2,3)]] to --> [(0,1),(2,3)]
+
+    # convert shape into a position:
+    formatted_shape = convert_shape_format(shape) # will look like this: [(),()]
+
+    for pos in formatted_shape:
+        if pos not in accepted_pos:
+            if pos[1] > -1:
+                return False
+    return True
+    # all pieces start off screen and automatically invalid. Will ask once the piece has passed -1 position before asking for validation
 
 # _______________________________________________________
 
@@ -410,7 +427,7 @@ def main(win):
     while run:
         # while run is True
 
-        for event in pygame.event.get()
+        for event in pygame.event.get():
             # get the pygame event. For each event check the the event type
             if event.type == pygame.QUIT:
                 # if the event type is quit
