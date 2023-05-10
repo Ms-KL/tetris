@@ -432,9 +432,31 @@ def main(win):
     clock = pygame.time.Clock()
         # uses Clock function in pygame
     fall_time = 0
+    fall_speed = 0.27
+        # how long it takes before each shape starts falling
 
     while run:
         # while run is True
+
+        grid = create_grid(locked_positions)
+            # everytime the piece moves, we could add something to locked_positions
+        fall_time += clock.get_rawtime()
+            # rawtime = gets the amount of time since the clock got ticked
+            # milliseconds
+        clock.tick()
+            # default tick = 0
+            # in the next iteration it is going to see how long it took for the while loop to run and add that amount (rawtime)
+        
+        if fall_time/1000 > fall_speed:
+            fall_time = 0 # reset
+            current_piece.y += 1 #move the piece down one
+
+            if not(valid_space(current_piece, grid)) and current_piece.y > 0:
+                # if the piece is going to move in a valid spot and is out of the screen
+                current_piece.y -= 1
+                # reverse move (illegal move)
+                change_piece = True
+                # if we move down, it means we hit the bottom of the screen or hit another piece --> ready for another piece to play
 
         for event in pygame.event.get():
             # get the pygame event. For each event check the the event type
