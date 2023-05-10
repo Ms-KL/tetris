@@ -432,9 +432,31 @@ def main(win):
     clock = pygame.time.Clock()
         # uses Clock function in pygame
     fall_time = 0
+    fall_speed = 0.27
+        # how long it takes before each shape starts falling
 
     while run:
         # while run is True
+
+        grid = create_grid(locked_positions)
+            # everytime the piece moves, we could add something to locked_positions
+        fall_time += clock.get_rawtime()
+            # rawtime = gets the amount of time since the clock got ticked
+            # milliseconds
+        clock.tick()
+            # default tick = 0
+            # in the next iteration it is going to see how long it took for the while loop to run and add that amount (rawtime)
+        
+        if fall_time/1000 > fall_speed:
+            fall_time = 0 # reset
+            current_piece.y += 1 #move the piece down one
+
+            if not(valid_space(current_piece, grid)) and current_piece.y > 0:
+                # if the piece is going to move in a valid spot and is out of the screen
+                current_piece.y -= 1
+                # reverse move (illegal move)
+                change_piece = True
+                # if we move down, it means we hit the bottom of the screen or hit another piece --> ready for another piece to play
 
         for event in pygame.event.get():
             # get the pygame event. For each event check the the event type
@@ -483,8 +505,35 @@ def main(win):
                         # if the rotation will put piece off screen
                         current_piece -= 1
         
+        shape_pos = convert_shape_format(current_piece)
+        # check the positions of all the pieces that have fallen to see if they need to be converted or if they need to be locked
+
+        for i in range(len(shape_pos)):
+        # check the grid and shape positions and if they exist and are on the screen, draw the color associated to that shape
+            x, y = shape_pos[i]
+            if y > -1:
+                grid[y][x] = current_piece.color
+        
+        if change_piece:
+            # checks to see if we are at the bottom or if we have moved a piece
+            for pos in shape_pos:
+                p = (pos[0], pos[1])
+                locked_positions[p] = current_piece.color
+                # locked positions will look like this: {(1,2):(255,0,0)} <-- dict of position and color
+                # allows us to get each locked_position within the grid and update the color
+
+            current_piece = next_piece # moving onto the next piece as previous piece is complete
+            next_piece = get_shape()
+            change_piece = False # looking at new piece that will spawn at top of screen
+
         draw_window(win, grid)
         # uses win created (as global out of this function), to pop up display game window
+
+        if check_lost(locked_positions):
+            # if the 
+            run = False
+    
+    pygame.display.quit()
 
 # _______________________________________________________
 
