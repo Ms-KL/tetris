@@ -1,4 +1,4 @@
-# ___________________ Continue Tutorial From: https://youtu.be/zfvxp7PgQ6c?t=3873
+# ___________________ Continue Tutorial From: https://youtu.be/zfvxp7PgQ6c?t=4682
 
 import pygame
 import random
@@ -357,9 +357,46 @@ def draw_grid(surface, grid):
             # draw vertical lines
 
 # _______________________________________________________
+# REFERENCE: https://youtu.be/zfvxp7PgQ6c?t=3872
 
 def clear_rows(grid, locked):
-    pass
+    inc = 0 #increment
+    for i in range(len(grid)-1, -1, -1):
+        # loop through grid list BACKWARDS (remember when indexing)
+            # prevents overwriting key in the dictionary when locked positions move down
+            # moves bottom ones down first and the ones above can't overwrite
+
+        row = grid[i]
+        # set row to every iteration / row in the grid
+
+        if (0,0,0) not in row:
+            # if black blocks don't exist = grid is full of locked pieces, needs to clear
+
+            inc += 1 # as a row is deleted, add to inc to find out how many rows to shift down and how many to add at top of grid
+            ind = i
+            for j in range(len(row)):
+                # get all block positions that are not 0,0,0
+                try:
+                    del locked[(j,i)]
+                    # delete the non-black positions from the locked positions list
+                    # this deletes the whole row from the grid (because grid is made up of locked pieces and draw-grid elements)
+                    # need to now shift grid down and add a new empty row at top to replace deleted row
+                except:
+                    continue
+        
+        if inc > 0:
+            for key in sorted(list(locked), key = lambda x:x[1])[::-1]:
+                # for every key, sorted in the list of locked positions --> sorts based on the order of y value
+                # eg: given this list: 
+                    # list = [(x,y), (x,y)]
+                    # locked_positions = [(0,1), (0,0)]
+                    # sorted = [(0,0), (0,1)]
+
+                x, y = key #gets x and y from locked_positions list
+                if y < ind: # if y/row value is above the current index in the loop (row), shift the rows above the y down
+                    newKey = (x, y + inc) # adds the number of deleted rows to y
+                    locked[newKey] = locked.pop(key)
+
 
 # _______________________________________________________
 
@@ -555,6 +592,7 @@ def main(win):
             current_piece = next_piece # moving onto the next piece as previous piece is complete
             next_piece = get_shape()
             change_piece = False # looking at new piece that will spawn at top of screen
+            clear_rows(grid, locked_positions)
 
         draw_window(win, grid)
         # uses win created (as global out of this function), to pop up display game window
