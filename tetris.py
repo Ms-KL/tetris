@@ -350,7 +350,7 @@ def draw_grid(surface, grid):
         for j in range(len(grid[i])):
         # j = x = column
 
-            pygame.draw.line(surface, (128,128,128), (sx, sy+j*block_size, sy), (sx+j*block_size, sy + play_height))
+            pygame.draw.line(surface, (128,128,128), (sx, sy+j * block_size, sy), (sx+j * block_size, sy + play_height))
             # draw 10 horizontal lines
 
 # _______________________________________________________
@@ -479,7 +479,7 @@ def main(win):
 
                     if not(valid_space(current_piece, grid)):
                         # if the space where the current piece is going to be moved to is not valid
-                        current_piece += 1
+                        current_piece.x += 1
                         # change the position back to where it was
 
                 if event.key == pygame.K_RIGHT:
