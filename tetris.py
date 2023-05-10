@@ -526,9 +526,14 @@ def main(win):
             next_piece = get_shape()
             change_piece = False # looking at new piece that will spawn at top of screen
 
-        
         draw_window(win, grid)
         # uses win created (as global out of this function), to pop up display game window
+
+        if check_lost(locked_positions):
+            # if the 
+            run = False
+    
+    pygame.display.quit()
 
 # _______________________________________________________
 
