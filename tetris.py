@@ -274,7 +274,6 @@ def convert_shape_format(shape):
 
 # _______________________________________________________
 
-# ---------------- TODO: Continue from here ---> valid_space https://youtu.be/XGf2GcyHPhc?t=12098
 def valid_space(shape, grid):
     '''
     check grid to see if we are moving into a valid space
@@ -298,7 +297,17 @@ def valid_space(shape, grid):
 # _______________________________________________________
 
 def check_lost(positions):
-    pass
+    '''
+    check to see if any of the pieces are above the screen
+    if y = 0 then the positon is lost / above screen
+    '''
+
+    for pos in positions:
+        x, y = pos # split tuple
+        if y < 1:
+            return True
+
+    return False
 
 # _______________________________________________________
 
