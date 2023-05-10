@@ -505,6 +505,28 @@ def main(win):
                         # if the rotation will put piece off screen
                         current_piece -= 1
         
+        shape_pos = convert_shape_format(current_piece)
+        # check the positions of all the pieces that have fallen to see if they need to be converted or if they need to be locked
+
+        for i in range(len(shape_pos)):
+        # check the grid and shape positions and if they exist and are on the screen, draw the color associated to that shape
+            x, y = shape_pos[i]
+            if y > -1:
+                grid[y][x] = current_piece.color
+        
+        if change_piece:
+            # checks to see if we are at the bottom or if we have moved a piece
+            for pos in shape_pos:
+                p = (pos[0], pos[1])
+                locked_positions[p] = current_piece.color
+                # locked positions will look like this: {(1,2):(255,0,0)} <-- dict of position and color
+                # allows us to get each locked_position within the grid and update the color
+
+            current_piece = next_piece # moving onto the next piece as previous piece is complete
+            next_piece = get_shape()
+            change_piece = False # looking at new piece that will spawn at top of screen
+
+        
         draw_window(win, grid)
         # uses win created (as global out of this function), to pop up display game window
 
