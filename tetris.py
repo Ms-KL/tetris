@@ -1,4 +1,4 @@
-# ----------> Continue from HERE: https://youtu.be/XGf2GcyHPhc?t=13157
+# ___________________ Continue Tutorial From: https://youtu.be/zfvxp7PgQ6c?t=3873
 
 import pygame
 import random
@@ -364,7 +364,31 @@ def clear_rows(grid, locked):
 # _______________________________________________________
 
 def draw_next_shape(shape, surface):
-    pass
+    font = pygame.font.SysFont('arial', 30)
+    label = font.render('Next Shape', 1, (255,255,255))
+        # set the font and title of the box "next shape"
+
+    sx = top_left_x + play_width + 50
+    sy = top_left_y + play_height/2 -100
+    # will place the shape to the right of the game-play area
+
+    format_shape = shape.shape[shape.rotation % len(shape.shape)]
+    # goal = to get the element within sublist --> list = T, sublist = ['.....','..0..','.000.','.....','.....'], element = '..0..'
+
+    # using modulus provides the remainder --> use the modulus to index against list and return the shape in corresponding index
+        # eg: look at current shape.shape (shape list and current index of that shape)... 
+            # eg: shape.shape[shape.rotation] = 0... returns the shape/rotation at index 0 of shape list --> this will increase/decrease based on arrow logic
+                # if current shape.shape[shape.rotation] > the length of the shape.shape list... then the remainder ( % ) is used to index.
+                    # eg: shape.shape[shape.rotation] = 4 and the len of the list is 3... then the remainder 1 is used to index in the 0 position of the list
+            # modulus provides the remainder, which is how the list is indexed again.
+
+    for i, line in enumerate(format_shape):
+        row = list(line)
+        for j, column in enumerate(row):
+            if column == '0':
+                pygame.draw.rect(surface, shape.color, (sx + j*block_size, sy + i*block_size, block_size, block_size), 0)
+
+    surface.blit(label, (sx + 10, sy - 30))
 
 # _______________________________________________________
 
@@ -419,8 +443,8 @@ def draw_window(surface, grid):
     draw_grid(surface, grid)
     # call function to draw
 
-    pygame.display.update()
-    # update screen with above
+    # pygame.display.update()
+    # removed an placed in main after draw_next_shape
 
 # _______________________________________________________
 
@@ -534,6 +558,11 @@ def main(win):
 
         draw_window(win, grid)
         # uses win created (as global out of this function), to pop up display game window
+
+        draw_next_shape(next_piece, win)
+        # uses next piece and win created (as global out of this function) to draw the next shape on the right of screen in popup window
+
+        pygame.display.update()
 
         if check_lost(locked_positions):
             # if the 
