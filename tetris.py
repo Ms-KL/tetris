@@ -1,4 +1,4 @@
-# ___________________ Continue Tutorial From: https://youtu.be/zfvxp7PgQ6c?t=4682
+# ___________________ Continue Tutorial From: https://youtu.be/zfvxp7PgQ6c?t=5566
 
 import pygame
 import random
@@ -327,8 +327,12 @@ def get_shape():
 
 # _______________________________________________________
 
-def draw_text_middle(text, size, color, surface):
-    pass
+def draw_text_middle(surface, text, size, color, ):
+    font = pygame.font.SysFont("arial", size, bold=True)
+    label = font.render(text, 1, color)
+
+    surface.blit(label, (top_left_x + play_width /2 - (label.get_width()/2), top_left_y + play_height /2 - label.get_height() / 2))
+    # enables drawing a message in the middle of the screen
 
 # _______________________________________________________
 
@@ -396,6 +400,9 @@ def clear_rows(grid, locked):
                 if y < ind: # if y/row value is above the current index in the loop (row), shift the rows above the y down
                     newKey = (x, y + inc) # adds the number of deleted rows to y
                     locked[newKey] = locked.pop(key)
+        
+        return inc
+        # increment (how many rows cleared --> used for score)
 
 
 # _______________________________________________________
@@ -429,7 +436,39 @@ def draw_next_shape(shape, surface):
 
 # _______________________________________________________
 
-def draw_window(surface, grid):
+def update_score(nscore):
+    # with open('scores.txt', 'r') as f:
+    #     # open text file in read mode, refer to as f
+    #     lines = f.readlines()
+    #     # read each line of the text file
+    #     score = lines[0].strip()
+    #     # remove backslash ends (automatically adds \n for new line)
+    
+    score = max_score()
+
+    with open('scores.txt', 'w') as f:
+        # open text file in write mode, refer to as f
+        if int(score) > nscore:
+            f.write(str(score))
+            # if the current score of the game is more than the score in the text file, update the score in the text file
+        else:
+            f.write(str(nscore))
+
+# _______________________________________________________
+
+def max_score():
+    with open('scores.txt', 'r') as f:
+        # open text file in read mode, refer to as f
+        lines = f.readlines()
+        # read each line of the text file
+        score = lines[0].strip()
+        # remove backslash ends (automatically adds \n for new line)
+    
+    return score
+
+# _______________________________________________________
+
+def draw_window(surface, grid, score=0, last_score = 0):
     surface.fill((0,0,0))
     # surface: drawing the grid on surface (canvas)
     # change the surface to black
@@ -452,6 +491,27 @@ def draw_window(surface, grid):
             # (top_left_x + play_width/2 - (label.get_width()/2)) 
                 # --> draw the label in the center of the screen calc LESS the label width
             # 30 = Y axis location = 30th Row
+
+    # ---- Current Score:
+    font = pygame.font.SysFont('arial', 30)
+    label = font.render('Score:' + str(score), 1, (255,255,255))
+        # set the font and title of the score field
+
+    sx = top_left_x + play_width + 50
+    sy = top_left_y + play_height/2 -100
+    # will place the score box to the right of the game-play area
+
+    surface.blit(label, (sx + 20, sy + 160))
+
+    # ---- High Score:
+    font = pygame.font.SysFont('arial', 30)
+    label = font.render('High Score:' + str(last_score), 1, (255,255,255))
+        # set the font and title of the score field
+
+    sx = top_left_x - 200
+    sy = top_left_y + 200
+
+    surface.blit(label, (sx + 20, sy + 160))
     
     '''
     this function is used in draw_window below
@@ -486,6 +546,7 @@ def draw_window(surface, grid):
 # _______________________________________________________
 
 def main(win):
+    last_score = max_score()
     locked_positions = {}
         # passing into create_grid
     grid = create_grid(locked_positions)
@@ -501,6 +562,10 @@ def main(win):
     fall_time = 0
     fall_speed = 0.27
         # how long it takes before each shape starts falling
+    level_time =  0
+        # how much time has passed --> level will go up and speed will increase to also increase difficulty
+    score = 0
+        # sets the initial score
 
     while run:
         # while run is True
@@ -510,9 +575,20 @@ def main(win):
         fall_time += clock.get_rawtime()
             # rawtime = gets the amount of time since the clock got ticked
             # milliseconds
+        level_time += clock.get_rawtime()
+            # increase level time at the same rate as rawtime
         clock.tick()
             # default tick = 0
             # in the next iteration it is going to see how long it took for the while loop to run and add that amount (rawtime)
+        
+        if level_time / 1000 > 5:
+            # every 5 seconds increase the speed
+            level_time = 0
+            if fall_speed > 0.12:
+                # this is the speed at which we stop increasing time
+                fall_speed -= 0.005
+                # this is fast
+                # how quickly the speed increases
         
         if fall_time/1000 > fall_speed:
             fall_time = 0 # reset
@@ -592,10 +668,11 @@ def main(win):
             current_piece = next_piece # moving onto the next piece as previous piece is complete
             next_piece = get_shape()
             change_piece = False # looking at new piece that will spawn at top of screen
-            clear_rows(grid, locked_positions)
+            score += clear_rows(grid, locked_positions) * 10 # finds the number of cleared rows and multiplies by 10. eg: 10 points per row cleared 
 
-        draw_window(win, grid)
+        draw_window(win, grid, score, last_score)
         # uses win created (as global out of this function), to pop up display game window
+        # score added to display in window
 
         draw_next_shape(next_piece, win)
         # uses next piece and win created (as global out of this function) to draw the next shape on the right of screen in popup window
@@ -603,15 +680,31 @@ def main(win):
         pygame.display.update()
 
         if check_lost(locked_positions):
-            # if the 
+            draw_text_middle(win, "YOU LOST!", 80, (255,255,255))
+            pygame.display.update()
+            pygame.time.delay(1500) # keeps the text up for 1.5 seconds to look at the message, then will divert to main menu
             run = False
+            update_score(score)
     
-    pygame.display.quit()
+    # pygame.display.quit()
 
 # _______________________________________________________
 
 def main_menu(win):
-    main(win)
+    run = True
+    while run:
+        win.fill((0,0,0))
+        draw_text_middle(win, 'Press Any Key To Play', 60, (255,255,255))
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False # tells the game to stop running when QUIT event happens (removed quit function in main)
+                pygame.display.quit()
+            if event.type ==pygame.KEYDOWN:
+                main(win)
+                # at the beginning of a game, hit any key and game will start
+
+    pygame.display.quit()
 
 # _______________________________________________________
 
