@@ -432,7 +432,7 @@ def draw_next_shape(shape, surface):
 
 # _______________________________________________________
 
-def draw_window(surface, grid):
+def draw_window(surface, grid, score=0):
     surface.fill((0,0,0))
     # surface: drawing the grid on surface (canvas)
     # change the surface to black
@@ -455,6 +455,17 @@ def draw_window(surface, grid):
             # (top_left_x + play_width/2 - (label.get_width()/2)) 
                 # --> draw the label in the center of the screen calc LESS the label width
             # 30 = Y axis location = 30th Row
+
+    # Score Box:
+    font = pygame.font.SysFont('arial', 30)
+    label = font.render('Score:' + str(score), 1, (255,255,255))
+        # set the font and title of the score field
+
+    sx = top_left_x + play_width + 50
+    sy = top_left_y + play_height/2 -100
+    # will place the score box to the right of the game-play area
+
+    surface.blit(label, (sx + 20, sy + 160))
     
     '''
     this function is used in draw_window below
@@ -612,8 +623,9 @@ def main(win):
             change_piece = False # looking at new piece that will spawn at top of screen
             score += clear_rows(grid, locked_positions) * 10 # finds the number of cleared rows and multiplies by 10. eg: 10 points per row cleared 
 
-        draw_window(win, grid)
+        draw_window(win, grid, score)
         # uses win created (as global out of this function), to pop up display game window
+        # score added to display in window
 
         draw_next_shape(next_piece, win)
         # uses next piece and win created (as global out of this function) to draw the next shape on the right of screen in popup window
