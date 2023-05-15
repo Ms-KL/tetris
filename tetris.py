@@ -1,4 +1,4 @@
-# ___________________ Continue Tutorial From: https://youtu.be/zfvxp7PgQ6c?t=4682
+# ___________________ Continue Tutorial From: https://youtu.be/zfvxp7PgQ6c?t=5566
 
 import pygame
 import random
@@ -436,6 +436,23 @@ def draw_next_shape(shape, surface):
 
 # _______________________________________________________
 
+def update_score(nscore):
+    with open('scores.txt', 'r') as f:
+        # open text file in read mode, refer to as f
+        lines = f.readlines()
+        # read each line of the text file
+        score = lines[0].strip()
+        # remove backslash ends (automatically adds \n for new line)
+
+    with open('scores.txt', 'w') as f:
+        # open text file in write mode, refer to as f
+        if int(score) > nscore:
+            f.write(str(score))
+            # if the current score of the game is more than the score in the text file, update the score in the text file
+        else:
+            f.write(str(nscore))
+# _______________________________________________________
+
 def draw_window(surface, grid, score=0):
     surface.fill((0,0,0))
     # surface: drawing the grid on surface (canvas)
@@ -641,6 +658,7 @@ def main(win):
             pygame.display.update()
             pygame.time.delay(1500) # keeps the text up for 1.5 seconds to look at the message, then will divert to main menu
             run = False
+            update_score(score)
     
     # pygame.display.quit()
 

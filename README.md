@@ -3,7 +3,6 @@
 # Personal Project: Tetris <img src="https://skillicons.dev/icons?i=py" height="25px" />
 
 <p><i>⏳ In Progress: Developing via tutorial</i></p>
-<br>
 
 ---
 
