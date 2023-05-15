@@ -396,6 +396,9 @@ def clear_rows(grid, locked):
                 if y < ind: # if y/row value is above the current index in the loop (row), shift the rows above the y down
                     newKey = (x, y + inc) # adds the number of deleted rows to y
                     locked[newKey] = locked.pop(key)
+        
+        return inc
+        # increment (how many rows cleared --> used for score)
 
 
 # _______________________________________________________
@@ -503,6 +506,8 @@ def main(win):
         # how long it takes before each shape starts falling
     level_time =  0
         # how much time has passed --> level will go up and speed will increase to also increase difficulty
+    score = 0
+        # sets the initial score
 
     while run:
         # while run is True
@@ -605,7 +610,7 @@ def main(win):
             current_piece = next_piece # moving onto the next piece as previous piece is complete
             next_piece = get_shape()
             change_piece = False # looking at new piece that will spawn at top of screen
-            clear_rows(grid, locked_positions)
+            score += clear_rows(grid, locked_positions) * 10 # finds the number of cleared rows and multiplies by 10. eg: 10 points per row cleared 
 
         draw_window(win, grid)
         # uses win created (as global out of this function), to pop up display game window
