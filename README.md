@@ -1,8 +1,11 @@
-<img src="https://github.com/Ms-KL/tetris/assets/92511648/a85b2cc5-ea3f-45f6-a80a-a13d671774cb" width="100px" height="100px" />
+<!-- # <img src="https://github.com/Ms-KL/tetris/assets/92511648/a85b2cc5-ea3f-45f6-a80a-a13d671774cb" width="100px" height="100px" /> -->
 
-# Personal Project: Tetris <img src="https://skillicons.dev/icons?i=py" height="25" />
+# Personal Project: Tetris <img src="https://skillicons.dev/icons?i=py" height="25px" />
 
-## ⏳ In Progress
+<p><i>⏳ In Progress: Developing via tutorial</i></p>
+<br>
+
+---
 
 ## About:
 
@@ -17,6 +20,13 @@
 - Pygame
 - Python
 
-Result Example from Tutorial:
+## Instructions:
 
-<img src="assets/example-screenshot.png" height="200">
+- download repo
+- pip install pygame
+- python tetris.py
+
+## WIP:
+
+<br>
+<img src="assets/kl-progress-screenshot.png" height="200">
