@@ -501,6 +501,8 @@ def main(win):
     fall_time = 0
     fall_speed = 0.27
         # how long it takes before each shape starts falling
+    level_time =  0
+        # how much time has passed --> level will go up and speed will increase to also increase difficulty
 
     while run:
         # while run is True
@@ -510,9 +512,20 @@ def main(win):
         fall_time += clock.get_rawtime()
             # rawtime = gets the amount of time since the clock got ticked
             # milliseconds
+        level_time += clock.get_rawtime()
+            # increase level time at the same rate as rawtime
         clock.tick()
             # default tick = 0
             # in the next iteration it is going to see how long it took for the while loop to run and add that amount (rawtime)
+        
+        if level_time / 1000 > 5:
+            # every 5 seconds increase the speed
+            level_time = 0
+            if fall_speed > 0.12:
+                # this is the speed at which we stop increasing time
+                fall_speed -= 0.005
+                # this is fast
+                # how quickly the speed increases
         
         if fall_time/1000 > fall_speed:
             fall_time = 0 # reset
