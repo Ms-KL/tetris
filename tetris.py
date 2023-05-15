@@ -437,12 +437,14 @@ def draw_next_shape(shape, surface):
 # _______________________________________________________
 
 def update_score(nscore):
-    with open('scores.txt', 'r') as f:
-        # open text file in read mode, refer to as f
-        lines = f.readlines()
-        # read each line of the text file
-        score = lines[0].strip()
-        # remove backslash ends (automatically adds \n for new line)
+    # with open('scores.txt', 'r') as f:
+    #     # open text file in read mode, refer to as f
+    #     lines = f.readlines()
+    #     # read each line of the text file
+    #     score = lines[0].strip()
+    #     # remove backslash ends (automatically adds \n for new line)
+    
+    score = max_score()
 
     with open('scores.txt', 'w') as f:
         # open text file in write mode, refer to as f
@@ -451,9 +453,22 @@ def update_score(nscore):
             # if the current score of the game is more than the score in the text file, update the score in the text file
         else:
             f.write(str(nscore))
+
 # _______________________________________________________
 
-def draw_window(surface, grid, score=0):
+def max_score():
+    with open('scores.txt', 'r') as f:
+        # open text file in read mode, refer to as f
+        lines = f.readlines()
+        # read each line of the text file
+        score = lines[0].strip()
+        # remove backslash ends (automatically adds \n for new line)
+    
+    return score
+
+# _______________________________________________________
+
+def draw_window(surface, grid, score=0, last_score = 0):
     surface.fill((0,0,0))
     # surface: drawing the grid on surface (canvas)
     # change the surface to black
@@ -477,7 +492,7 @@ def draw_window(surface, grid, score=0):
                 # --> draw the label in the center of the screen calc LESS the label width
             # 30 = Y axis location = 30th Row
 
-    # Score Box:
+    # ---- Current Score:
     font = pygame.font.SysFont('arial', 30)
     label = font.render('Score:' + str(score), 1, (255,255,255))
         # set the font and title of the score field
@@ -485,6 +500,16 @@ def draw_window(surface, grid, score=0):
     sx = top_left_x + play_width + 50
     sy = top_left_y + play_height/2 -100
     # will place the score box to the right of the game-play area
+
+    surface.blit(label, (sx + 20, sy + 160))
+
+    # ---- High Score:
+    font = pygame.font.SysFont('arial', 30)
+    label = font.render('High Score:' + str(last_score), 1, (255,255,255))
+        # set the font and title of the score field
+
+    sx = top_left_x - 200
+    sy = top_left_y + 200
 
     surface.blit(label, (sx + 20, sy + 160))
     
@@ -521,6 +546,7 @@ def draw_window(surface, grid, score=0):
 # _______________________________________________________
 
 def main(win):
+    last_score = max_score()
     locked_positions = {}
         # passing into create_grid
     grid = create_grid(locked_positions)
@@ -644,7 +670,7 @@ def main(win):
             change_piece = False # looking at new piece that will spawn at top of screen
             score += clear_rows(grid, locked_positions) * 10 # finds the number of cleared rows and multiplies by 10. eg: 10 points per row cleared 
 
-        draw_window(win, grid, score)
+        draw_window(win, grid, score, last_score)
         # uses win created (as global out of this function), to pop up display game window
         # score added to display in window
 
