@@ -327,8 +327,12 @@ def get_shape():
 
 # _______________________________________________________
 
-def draw_text_middle(text, size, color, surface):
-    pass
+def draw_text_middle(surface, text, size, color, ):
+    font = pygame.font.SysFont("arial", size, bold=True)
+    label = font.render(text, 1, color)
+
+    surface.blit(label, (top_left_x + play_width /2 - (label.get_width()/2), top_left_y + play_height /2 - label.get_height() / 2))
+    # enables drawing a message in the middle of the screen
 
 # _______________________________________________________
 
@@ -633,7 +637,9 @@ def main(win):
         pygame.display.update()
 
         if check_lost(locked_positions):
-            # if the 
+            draw_text_middle(win, "YOU LOST!", 80, (255,255,255))
+            pygame.display.update()
+            pygame.time.delay(1500) # keeps the text up for 1.5 seconds to look at the message, then will divert to main menu
             run = False
     
     pygame.display.quit()
