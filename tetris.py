@@ -642,12 +642,25 @@ def main(win):
             pygame.time.delay(1500) # keeps the text up for 1.5 seconds to look at the message, then will divert to main menu
             run = False
     
-    pygame.display.quit()
+    # pygame.display.quit()
 
 # _______________________________________________________
 
 def main_menu(win):
-    main(win)
+    run = True
+    while run:
+        win.fill((0,0,0))
+        draw_text_middle(win, 'Press Any Key To Play', 60, (255,255,255))
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False # tells the game to stop running when QUIT event happens (removed quit function in main)
+                pygame.display.quit()
+            if event.type ==pygame.KEYDOWN:
+                main(win)
+                # at the beginning of a game, hit any key and game will start
+
+    pygame.display.quit()
 
 # _______________________________________________________
 
