@@ -1,0 +1,95 @@
+The provided code is a Python implementation of a Tetris game using the Pygame library. 
+It includes various functions and classes to create the game and handle gameplay mechanics. Here's an explanation of each function and class:
+
+1. `Piece` class:
+   - Represents a Tetris piece and its attributes (x and y position, shape, color, rotation).
+   - Allows creating instances of Tetris pieces.
+
+2. `create_grid` function:
+   - Creates a 2D grid of black squares representing the Tetris game area.
+   - Takes a dictionary of locked positions (pieces that have landed and cannot be moved) as an optional parameter.
+   - Updates the grid by replacing black squares with colored squares for the locked positions.
+
+3. `convert_shape_format` function:
+   - Converts the shape of a Tetris piece into a format that the computer can read.
+   - Takes a piece shape as input and returns a list of positions (x, y) representing the occupied blocks.
+   - Handles the rotation of the shape.
+
+4. `valid_space` function:
+   - Checks if moving a Tetris piece to a new position is valid.
+   - Takes a piece shape and the game grid as input.
+   - Uses the `convert_shape_format` function to get the positions of the piece on the grid.
+   - Checks if any of the positions overlap with existing occupied blocks or fall outside the grid boundaries.
+
+5. `check_lost` function:
+   - Checks if any of the Tetris pieces have reached the top of the game area, indicating a loss.
+   - Takes a list of piece positions as input and returns a Boolean value indicating if the game has been lost.
+
+6. `get_shape` function:
+   - Returns a randomly selected Tetris piece.
+   - Creates an instance of the `Piece` class with a random shape, initial x position of 5, and initial y position of 0.
+
+7. `draw_text_middle` function:
+   - Draws text in the middle of the game window.
+   - Takes a Pygame surface, text content, font size, and color as input.
+   - Centers the text horizontally and vertically in the game window using the dimensions of the playing field.
+
+8. `draw_grid` function:
+   - Draws the grid lines over the game area to create a visual representation of the game grid.
+   - Takes a Pygame surface and the game grid as input.
+   - Uses Pygame's drawing functions to draw horizontal and vertical lines for each block in the grid.
+
+9. `clear_rows` function: <this need to be updated>
+   - Clears completed rows from the game grid and updates the locked positions accordingly.
+   - Takes the game grid and a dictionary of locked positions as input.
+   - Iterates over the grid from bottom to top and checks if a row is complete (contains no black squares).
+   - If a complete row is found, increments a counter (`inc`), deletes the row from the grid and locked positions, and shifts the rows above it down.
+   - Updates the locked positions dictionary to reflect the changes in row positions.
+
+10. `draw_next_shape` function:
+
+   - This function is responsible for drawing the next shape that will appear in the preview window.
+   - It takes two parameters: shape (the next shape to be displayed) and surface (the Pygame surface on which to draw the shape).
+   - The function first clears the preview window by filling it with black color using surface.fill((0, 0, 0)).
+   - It then calculates the starting position for the shape based on the size of the preview window.
+   - Next, it converts the shape format using the convert_shape_format function to get the positions of the blocks in the shape.
+   - Finally, it uses a nested loop to iterate over the positions and draws each block on the surface using Pygame's drawing functions.
+
+11. `update_score` function:
+
+   - This function updates the player's score based on the number of rows cleared.
+   - It takes two parameters: score (the current score) and row_cleared (the number of rows cleared in the last move).
+   - The function calculates the points to be awarded based on the number of rows cleared using the formula points = 100 * (2 ** (row_cleared - 1)).
+   - It then adds the points to the current score and returns the updated score.
+
+12. `max_score`` function:
+
+   - This function retrieves the current maximum score from a text file named "max_score.txt".
+   - It opens the file in read mode, reads the content as an integer, and returns the value.
+   - If the file does not exist or cannot be read, it returns 0 as the default maximum score.
+
+13. `draw_window` function:
+
+   - This function is responsible for drawing the game window and its contents.
+   - It takes several parameters: surface (the Pygame surface on which to draw), grid (the game grid), score (the current score), max_score (the maximum score), and level (the current level).
+   - The function first fills the entire window with black color using surface.fill((0, 0, 0)).
+   - It then draws the title of the game at the top of the window using the draw_text_middle function.
+   - Next, it draws the game grid using the draw_grid function.
+   - It also draws the score, level, and maximum score on the screen using surface.blit and draw_text_middle functions.
+   - Finally, it updates the display to show the changes.
+
+14. `main` function:
+   - This is the main game loop where the gameplay mechanics are handled.
+   - It takes no parameters.
+   - The function first initializes the game window, clock, and other necessary variables.
+   - It sets up the game grid using the create_grid function and creates the first Tetris piece using the get_shape function.
+   - Inside the main loop, it handles user inputs, such as keyboard events.
+   - It checks if the player has pressed the arrow keys to move or rotate the Tetris piece and updates the piece's position and rotation accordingly.
+   - It checks if the piece has collided with any other blocks or the edges of the grid using the valid_space function.
+   - If the piece has collided, it adds the piece's position to the locked positions dictionary and creates a new piece.
+   - It checks if any rows are completed using the clear_rows function and updates the score and level accordingly.
+   - It checks if the player has lost the game by reaching the top of the grid using the check_lost function.
+
+These functions work together to handle various aspects of the Tetris game, including grid creation, shape manipulation, collision detection, line clearing, and game over conditions. 
+The `Piece` class represents individual Tetris pieces, and the `draw_` functions handle the visual rendering of the game. 
+The remaining functions provide game logic for validating moves, checking for game over, and managing completed rows.

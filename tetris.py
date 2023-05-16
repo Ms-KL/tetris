@@ -1,5 +1,3 @@
-# ___________________ Continue Tutorial From: https://youtu.be/zfvxp7PgQ6c?t=5566
-
 import pygame
 import random
 
@@ -365,7 +363,9 @@ def draw_grid(surface, grid):
 
 def clear_rows(grid, locked):
     inc = 0 #increment
-    for i in range(len(grid)-1, -1, -1):
+    rows_to_clear = [] #stores what rows that need to clear
+
+    for i in range(len(grid) -1, -1, -1):
         # loop through grid list BACKWARDS (remember when indexing)
             # prevents overwriting key in the dictionary when locked positions move down
             # moves bottom ones down first and the ones above can't overwrite
@@ -377,7 +377,9 @@ def clear_rows(grid, locked):
             # if black blocks don't exist = grid is full of locked pieces, needs to clear
 
             inc += 1 # as a row is deleted, add to inc to find out how many rows to shift down and how many to add at top of grid
-            ind = i
+            rows_to_clear.append(i) # add the row to clear to the list
+            # ind = i <-- didn't work
+
             for j in range(len(row)):
                 # get all block positions that are not 0,0,0
                 try:
@@ -385,25 +387,26 @@ def clear_rows(grid, locked):
                     # delete the non-black positions from the locked positions list
                     # this deletes the whole row from the grid (because grid is made up of locked pieces and draw-grid elements)
                     # need to now shift grid down and add a new empty row at top to replace deleted row
-                except:
+                except KeyError:
                     continue
-        
-        if inc > 0:
-            for key in sorted(list(locked), key = lambda x:x[1])[::-1]:
-                # for every key, sorted in the list of locked positions --> sorts based on the order of y value
-                # eg: given this list: 
-                    # list = [(x,y), (x,y)]
-                    # locked_positions = [(0,1), (0,0)]
-                    # sorted = [(0,0), (0,1)]
 
-                x, y = key #gets x and y from locked_positions list
-                if y < ind: # if y/row value is above the current index in the loop (row), shift the rows above the y down
-                    newKey = (x, y + inc) # adds the number of deleted rows to y
-                    locked[newKey] = locked.pop(key)
-        
-        return inc
-        # increment (how many rows cleared --> used for score)
+            
+    if inc > 0:
+        for key in sorted(list(locked), key=lambda x: x[1])[::-1]:
+            # for every key, sorted in the list of locked positions --> sorts based on the order of y value
+            # eg: given this list: 
+                # list = [(x,y), (x,y)]
+                # locked_positions = [(0,1), (0,0)]
+                # sorted = [(0,0), (0,1)]
 
+            x, y = key #gets x and y from locked_positions list
+            if y < rows_to_clear[0]:
+            # if y < ind: # if y/row value is above the current index in the loop (row), shift the rows above the y down <-- didnt work
+                new_key = (x, y + inc) # adds the number of deleted rows to y
+                locked[new_key] = locked.pop(key)
+
+    return inc
+    # increment (how many rows cleared --> used for score)
 
 # _______________________________________________________
 
