@@ -2,7 +2,12 @@
 
 # Personal Project: Tetris <img src="https://skillicons.dev/icons?i=py" height="25px" />
 
-<p><i>⏳ In Progress: Developing via tutorial</i></p>
+
+<p><i>✅ Complete: FreeCodeCamp Tutorial</i></p>
+<p><i>✅ Complete: Created Initial Docstrings & Guide-Notes</i></p>
+<p><i>✅ Complete: GitHub Co-Pilot Docstring & Notes Edit Suggestions</i></p>
+<p><i>⏳ In Progress: Edit/Customisation of code and aesthetic</i></p>
+<p><i>⏳ In Progress: Investigation of game embed in deployed website</i></p>
 
 ---
 
